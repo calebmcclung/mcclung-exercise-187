@@ -1,0 +1,198 @@
+//AUTHOR: Caleb McClung
+//COURSE: CPT 187
+//PURPOSE: This is a supportive class for the SodNotZod order program.
+//This will verify and add usernames and passwords to log into the program.
+//STARTDATE: 7/4/2020
+
+package edu.cpt187.mcclung.participation6;
+
+import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
+public class UserAccounts 
+{//START UserAccounts CLASS
+
+	//DECLARE AND INIITIALIZE CLASS CONSTANTS
+	private final int NOT_FOUND = -1;
+	private final int RESET_VALUE = 0;
+	private final int MAXIMUM_RECORDS = 50;
+
+	//DECLARE AND INITIALIZE VARIABLE ATTRIBUTES
+	private String[] userNames = new String[MAXIMUM_RECORDS];
+	private String[] passwords = new String[MAXIMUM_RECORDS];
+	private boolean fileFoundFlag = false;
+	private String masterFileName = "";
+	private int recordCount = 0;
+	private int searchedIndex = 0;
+
+	//UserAccounts CLASS CONSTRUCTOR
+	public UserAccounts(String borrowedFileName)
+	{
+		masterFileName = borrowedFileName;
+
+		setUserAccountArrays();
+	}
+	//END UserAccounts CLASS CONSTRUCTOR
+
+
+	//START SETTER METHODS		START SETTER METHODS			START SETTER METHODS
+
+
+	//set the arrays for user accounts
+	public void setUserAccountArrays()
+	{
+		//start try/catch block to load array from master file
+		try
+		{
+			//open Scanner w/ FileInputStream as argument
+			Scanner infile = new Scanner(new FileInputStream(masterFileName));
+
+			//start while
+			while(infile.hasNext() == true && recordCount < MAXIMUM_RECORDS)
+			{
+				userNames[recordCount] = infile.next();
+				passwords[recordCount] = infile.next();
+
+				recordCount++;
+			}//end while
+
+			infile.close();		//close Scanner/FileInputStream 
+		}//end try
+		catch(IOException x)
+		{
+			recordCount = NOT_FOUND;
+		}//end catch
+
+	}//end setUserAccountArrays
+
+	//overload 1/2: set searchedIndex for just userName
+	public void setSearchedIndex(String borrowedUserName)
+	{
+		searchedIndex = getSeqSearch(borrowedUserName);
+	}//end setSearchIndex 1/2
+
+	//overload 2/2: set searchedIndex, for both userName and password
+	public void setSearchedIndex(String borrowedUserName, String borrowedPassword)
+	{
+		searchedIndex = getSeqSearch(borrowedUserName);
+
+		if(searchedIndex > NOT_FOUND) 
+		{
+
+			fileFoundFlag = getPasswordMatch(borrowedPassword);
+
+			if(fileFoundFlag == false)
+			{
+				searchedIndex = NOT_FOUND;
+			}//end if for getSeqSearchedIndex
+		}//end if for searchedIndex
+		else
+		{
+			searchedIndex = NOT_FOUND;
+		}//end else for searchedIndex
+
+	}//end setSearchedIndex 2/2
+
+	//set to write new username and password to master user file
+	public void setWriteOneRecord(String borrowedUserName, String borrowedPassword)
+	{
+		//start try/catch
+		try
+		{
+			//instantiate FileWriter class inside PrintWriter class
+			PrintWriter filePW = new PrintWriter(new FileWriter(masterFileName, true));
+
+			//write new login info to masterFile
+			filePW.printf("%n%s\t%s%n", borrowedUserName, borrowedPassword);
+
+			filePW.close();
+			fileFoundFlag = true;
+			recordCount++;
+		}//end try
+		catch(IOException x)
+		{
+			recordCount = NOT_FOUND;
+		}//end catch
+
+	}//end setWriteOneRecord
+
+
+	//END SETTER METHODS		END SETTER METHODS				END SETTER METHODS
+
+
+	//START GETTER METHODS		START GETTER METHODS			START GETTER METHODS
+
+
+	//get sequential search of borrowed username
+	public int getSeqSearch(String borrowedborrowedUserName)
+	{
+		int localIndex = RESET_VALUE;
+		int found = NOT_FOUND;
+
+		while(localIndex < recordCount)
+		{
+			//start if
+			if(borrowedborrowedUserName.equals(userNames[localIndex]))
+			{
+				found = localIndex;
+				localIndex = recordCount;
+			}//end if
+			else
+			{
+				localIndex++;
+			}//end else
+
+		}//end while loop
+
+		return found;	//return value of search
+	}//end getSeqSearch
+
+	//get password match search
+	public boolean getPasswordMatch(String borrowedborrowedPassword)
+	{
+		//		boolean localFlag = false;
+
+		//start if
+		if(passwords[searchedIndex].equals(String.valueOf(borrowedborrowedPassword)))
+		{
+			return true;
+		}//end if
+		else
+		{
+			return false;
+		}//end else
+
+		//		return localFlag;
+	}//end getPasswordMatch
+
+	//get fileFoundFlag
+	public boolean getFileFoundFlag()
+	{
+		return fileFoundFlag;
+	}//end getFileFoundFlag
+
+	//get file name
+	public String getFileName()
+	{
+		return masterFileName;
+	}//end getFileName
+
+	//get recordCount
+	public int getRecordCount()
+	{
+		return recordCount;
+	}//end getRecordCount
+
+	public int getSearchedIndex()
+	{
+		return searchedIndex;
+	}//end getSearchedIndex
+
+
+	//END GETTER METHODS		END GETTER METHODS			END GETTER METHODS
+
+
+}//END UserAccounts CLASS
