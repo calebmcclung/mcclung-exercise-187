@@ -1,0 +1,83 @@
+//AUTHOR: Caleb McClung
+//COURSE: CPT 187
+//PURPOSE: This is a supportive class for the SodNotZod order program.
+//This will write and retrieve customer orders that are in progress.
+//STARTDATE: 7/21/2020
+
+package edu.cpt187.mcclung.participation6;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
+public class OrderWriter 
+{//START OrderWriter Class
+
+	//DECLARE AND INITIALIZE VARIABLE ATTRIBUTES
+	private boolean fileFoundFlag = false;
+	private String masterFileName = "";
+	private int recordCount = 0;
+
+	//OrderWriter CLASS CONSTRUCTOR
+	public OrderWriter(String borrowedFileName)
+	{
+		masterFileName = borrowedFileName;
+	}//end OrderWriter
+
+	//START SETTER METHODS		START SETTER METHODS			START SETTER METHODS
+
+
+	//set write order to external masterFile
+	public void setWriteOrder(int borrowedItem, String borrowedItemName, double borrowedItemPrice, 
+			int borrowedQuantity, double borrowedOrderCost)
+	{
+		//start try/catch
+		try
+		{
+			//instantiate FileWriter class inside PrintWriter class
+			PrintWriter filePW = new PrintWriter(new FileWriter(masterFileName, true));
+
+			//write order record to master file
+			filePW.printf("%n%d\t%s\t%f\t%d\t%f%n", borrowedItem, borrowedItemName, 
+					borrowedItemPrice, borrowedQuantity, borrowedOrderCost);
+
+			filePW.close();				//close PrintWriter/FileWriter object
+			fileFoundFlag = true;		//prove master file was properly located and written to
+			recordCount++;				//increment to track number of records
+		}//end try
+		catch(IOException x)
+		{
+			fileFoundFlag = false;
+		}//end catch
+
+	}//end setWriteOrder
+
+
+	//END SETTER METHODS		END SETTER METHODS				END SETTER METHODS
+
+
+	//START GETTER METHODS		START GETTER METHODS			START GETTER METHODS
+
+
+	//get fileFoundFlag
+	public boolean getFileFoundFlag()
+	{
+		return fileFoundFlag;
+	}//end getFileFoundFlag
+
+	//get masterFileName
+	public String getFileName()
+	{
+		return masterFileName;
+	}//end getFileName
+
+	//get recordCount
+	public int getRecordCount()
+	{
+		return recordCount;
+	}//end getRecordCount
+
+
+	//END GETTER METHODS		END GETTER METHODS				END GETTER METHODS
+
+}//END OrderWriter Class
