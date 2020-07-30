@@ -46,6 +46,9 @@ public class MainClass
 		//main menu
 		menuSelection = validateMainMenu(input);
 
+		//set user account arrays
+		currentUser.setUserAccountArrays();
+
 
 		//WHILE MAIN MENU NOT 'Q'
 		while(menuSelection != 'Q')
@@ -176,9 +179,6 @@ public class MainClass
 
 					}//END WHILE FILE MENU NOT 'R' RETURN
 
-					//MAIN MENU
-					menuSelection = validateMainMenu(input);
-
 				}//END ELSE LOGIN SUCCESSFUL
 
 			}//END IF MENU SELECTION = 'A' LOGIN
@@ -200,6 +200,9 @@ public class MainClass
 				{
 					//enter password and write new account record to master file
 					currentUser.setWriteOneRecord(userName, getNewPassword(input));
+
+					//update user account arrays
+					currentUser.setUserAccountArrays();
 
 					//new account created
 					displayNewAccountMessage();
@@ -425,14 +428,14 @@ public class MainClass
 		System.out.printf("%-26s%-3s%-8.2f\n\n", "Item Price:", "$", borrowedItemPrice);
 
 		System.out.printf("%-26s%-20s\n", "Discount Name:", borrowedDiscountName); 
-		System.out.printf("%-26s%16.1f%-2s\n", "Discount Rate:", borrowedDiscountRate, "%"); 
+		System.out.printf("%-26s%-3.1f%-2s\n", "Discount Rate:", borrowedDiscountRate * 100, "%"); 
 		System.out.printf("%-26s%-3s%-8.2f\n", "Discount Amount:", "$", borrowedDiscountAmt);
 		System.out.printf("%-26s%-3s%-8.2f\n\n", "Discount Price:", "$", borrowedDiscountPrice);
 
-		System.out.printf("%-26s%18d\n\n", "Quantity:", borrowedHowMany);
+		System.out.printf("%-26s%-11d\n\n", "Quantity:", borrowedHowMany);
 
 		System.out.printf("%-26s%-3s%-8.2f\n", "Subtotal:", "$", borrowedSubTotal);
-		System.out.printf("%-26s%16.1f%-2s\n", "Tax Rate:", borrowedTaxRate, "%");
+		System.out.printf("%-26s%-3.1f%-2s\n", "Tax Rate:", borrowedTaxRate * 100, "%");
 		System.out.printf("%-26s%-3s%-8.2f\n\n", "Tax Amount:", "$", borrowedTaxAmt);
 
 		System.out.printf("%-26s%-3s%-8.2f\n\n", "Order Total:", "$", borrowedTotalCost);
@@ -456,10 +459,10 @@ public class MainClass
 		System.out.printf("%-26s%-20s\n", "Item Name:", borrowedItemName);
 		System.out.printf("%-26s%-3s%-8.2f\n\n", "Item Price:", "$", borrowedItemPrice);
 
-		System.out.printf("%-26s%18d\n\n", "Quantity:", borrowedHowMany);
+		System.out.printf("%-26s%-11d\n\n", "Quantity:", borrowedHowMany);
 
 		System.out.printf("%-26s%-3s%-8.2f\n", "Subtotal:", "$", borrowedSubTotal);
-		System.out.printf("%-26s%16.1f%-2s\n", "Tax Rate:", borrowedTaxRate, "%");
+		System.out.printf("%-26s%-3.1f%-2s\n", "Tax Rate:", borrowedTaxRate * 100, "%");
 		System.out.printf("%-26s%-3s%-8.2f\n\n", "Tax Amount:", "$", borrowedTaxAmt);
 
 		System.out.printf("%-26s%-3s%-8.2f\n\n", "Order Total:", "$", borrowedTotalCost);
@@ -489,7 +492,7 @@ public class MainClass
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.printf("%-30s%-20s\n\n", "Employee Name:", borrowedUserName);
 
-		System.out.printf("%-6s%-28s%-10s%-5s%-10s\n", "ID", "NAME", "PRICE", "QTY", "TOTAL");
+		System.out.printf("%-6s%-28s%-8s%-5s%-10s\n", "ID", "NAME", "PRICE", "QTY", "TOTAL");
 		//while for order records
 		while(localIndex < borrowedItemNames.length)
 		{
@@ -506,7 +509,7 @@ public class MainClass
 		localIndex = 0;
 		while(localIndex < borrowedDiscountNames.length)
 		{
-			System.out.printf("%-4s%-23s%10d\n", borrowedDiscountNames[localIndex], " count: ", 
+			System.out.printf("%-4s%-20s%10d\n", borrowedDiscountNames[localIndex], " count: ", 
 					borrowedDiscountCounts[localIndex]);
 			localIndex++;
 		}//end while for discount info
@@ -516,7 +519,7 @@ public class MainClass
 		localIndex = 0;
 		while(localIndex < borrowedPrizeNames.length)
 		{
-			System.out.printf("%-4s%-23s%10d\n", borrowedPrizeNames[localIndex], " count: ", 
+			System.out.printf("%-4s%-18s%10d\n", borrowedPrizeNames[localIndex], " count: ", 
 					borrowedPrizeCounts[localIndex]);
 			localIndex++;
 		}//end while for prize info
