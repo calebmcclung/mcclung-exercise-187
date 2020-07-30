@@ -32,8 +32,6 @@ public class UserAccounts
 	public UserAccounts(String borrowedFileName)
 	{
 		masterFileName = borrowedFileName;
-
-		setUserAccountArrays();
 	}
 	//END UserAccounts CLASS CONSTRUCTOR
 
@@ -56,6 +54,7 @@ public class UserAccounts
 				userNames[recordCount] = infile.next();
 				passwords[recordCount] = infile.next();
 
+				fileFoundFlag = true;
 				recordCount++;
 			}//end while
 
@@ -79,20 +78,10 @@ public class UserAccounts
 	{
 		searchedIndex = getSeqSearch(borrowedUserName);
 
-		if(searchedIndex > NOT_FOUND) 
-		{
-
-			fileFoundFlag = getPasswordMatch(borrowedPassword);
-
-			if(fileFoundFlag == false)
-			{
-				searchedIndex = NOT_FOUND;
-			}//end if for getSeqSearchedIndex
-		}//end if for searchedIndex
-		else
+		if(searchedIndex > NOT_FOUND && getPasswordMatch(borrowedPassword) == false)
 		{
 			searchedIndex = NOT_FOUND;
-		}//end else for searchedIndex
+		}//end if
 
 	}//end setSearchedIndex 2/2
 
@@ -153,19 +142,15 @@ public class UserAccounts
 	//get password match search
 	public boolean getPasswordMatch(String borrowedborrowedPassword)
 	{
-		//		boolean localFlag = false;
+		boolean localFlag = false;
 
 		//start if
 		if(passwords[searchedIndex].equals(String.valueOf(borrowedborrowedPassword)))
 		{
-			return true;
+			localFlag = true;
 		}//end if
-		else
-		{
-			return false;
-		}//end else
 
-		//		return localFlag;
+		return localFlag;
 	}//end getPasswordMatch
 
 	//get fileFoundFlag
