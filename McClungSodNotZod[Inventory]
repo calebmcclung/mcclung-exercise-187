@@ -96,8 +96,11 @@ public class Inventory
 				itemNames[recordCount] = infile.next();
 				itemPrices[recordCount] = infile.nextDouble();
 				inStockCounts[recordCount] = infile.nextInt();
+
 				recordCount++;
 			}//end while
+
+			setBubbleSort();
 			infile.close();//close Scanner object
 		}//end try
 		catch(IOException x)
@@ -115,17 +118,19 @@ public class Inventory
 	//set to rearrange arrays w/ bubble sort
 	public void setBubbleSort()
 	{
-		int last = recordCount - 1;
+		int zero = RESET_VALUE;
+		int one = NOT_FOUND * NOT_FOUND;
+		int last = recordCount - one;
 		boolean swap = false;
 
-		while(last > 0)
+		while(last > zero)
 		{
 			int index = RESET_VALUE;
 
 			while(index < last)
 			{
 				//start if1
-				if(itemIDs[index] > itemIDs[index + 1])
+				if(itemIDs[index] > itemIDs[index + one])
 				{
 					setSwapArrayElements(index);
 					swap = true;
@@ -152,22 +157,23 @@ public class Inventory
 	//set swap for array elements in bubbles sort
 	public void setSwapArrayElements(int borrowedIndex)
 	{
+		int one = NOT_FOUND * NOT_FOUND;
 		int tempID = itemIDs[borrowedIndex];
 		String tempName = itemNames[borrowedIndex];
 		double tempPrice = itemPrices[borrowedIndex];
 		int tempCount = inStockCounts[borrowedIndex];
 
-		itemIDs[borrowedIndex] = itemIDs[borrowedIndex + 1];
-		itemIDs[borrowedIndex + 1] = tempID;
+		itemIDs[borrowedIndex] = itemIDs[borrowedIndex + one];
+		itemIDs[borrowedIndex + one] = tempID;
 
-		itemNames[borrowedIndex] = itemNames[borrowedIndex + 1];
-		itemNames[borrowedIndex + 1] = tempName;
+		itemNames[borrowedIndex] = itemNames[borrowedIndex + one];
+		itemNames[borrowedIndex + one] = tempName;
 
-		itemPrices[borrowedIndex] = itemPrices[borrowedIndex + 1];
-		itemPrices[borrowedIndex + 1] = tempPrice;
+		itemPrices[borrowedIndex] = itemPrices[borrowedIndex + one];
+		itemPrices[borrowedIndex + one] = tempPrice;
 
-		inStockCounts[borrowedIndex] = inStockCounts[borrowedIndex + 1];
-		inStockCounts[borrowedIndex + 1] = tempCount;
+		inStockCounts[borrowedIndex] = inStockCounts[borrowedIndex + one];
+		inStockCounts[borrowedIndex + one] = tempCount;
 
 	}//end setSwapArrayElements
 
